@@ -1,0 +1,60 @@
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #3f51b5 0%, #e0e0e0 100%); /* Un fondo más bonito */
+}
+
+mat-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  border-radius: 12px; /* Bordes redondeados */
+}
+
+.center-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* Espacio interno de cada pestaña */
+.tab-form {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.full-width-btn {
+  width: 100%;
+  padding: 20px 0; /* Botones más altos */
+}
+
+.hint-text {
+  text-align: center;
+  color: #666;
+  font-size: 0.9em;
+  margin-bottom: 15px;
+}
+
+/* Ajuste para iconos dentro de inputs */
+mat-icon {
+  margin-right: 8px;
+}
+
+.loading-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+mat-spinner {
+  margin: 0 auto;
+}
