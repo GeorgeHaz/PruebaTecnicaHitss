@@ -9,10 +9,10 @@ Thumbs.db
 # ==========================
 # FRONTEND (Angular)
 # ==========================
-Front/node_modules/
-Front/dist/
-Front/.angular/
-Front/.editorconfig
+Front/frontend-app/node_modules/
+Front/frontend-app/dist/
+Front/frontend-app/.angular/
+Front/frontend-app/.editorconfig
 
 # ==========================
 # BACKEND - PHP (Laravel)
