@@ -12,6 +12,7 @@ Thumbs.db
 Front/frontend-app/node_modules/
 Front/frontend-app/dist/
 Front/frontend-app/.angular/
+Front/frontend-app/.vscode/
 Front/frontend-app/.editorconfig
 
 # ==========================
@@ -38,3 +39,6 @@ Backend-microservicios/AuthService/*.user
 # ==========================
 # Si tuvieras volumenes locales mapeados aquí
 docker-data/
+**/node_modules/
+**/.angular/
+**/.vscode/
