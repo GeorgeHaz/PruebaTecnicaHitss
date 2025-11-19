@@ -1,0 +1,40 @@
+# ==========================
+# GLOBAL / SISTEMA
+# ==========================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# ==========================
+# FRONTEND (Angular)
+# ==========================
+Front/node_modules/
+Front/dist/
+Front/.angular/
+Front/.editorconfig
+
+# ==========================
+# BACKEND - PHP (Laravel)
+# ==========================
+# Nota: Ajustado a tu carpeta 'customer-order-service'
+Backend-microservicios/customer-order-service/vendor/
+Backend-microservicios/customer-order-service/node_modules/
+Backend-microservicios/customer-order-service/.env
+Backend-microservicios/customer-order-service/storage/*.key
+Backend-microservicios/customer-order-service/public/storage
+Backend-microservicios/customer-order-service/public/hot
+
+# ==========================
+# BACKEND - .NET (AuthService)
+# ==========================
+Backend-microservicios/AuthService/**/bin/
+Backend-microservicios/AuthService/**/obj/
+Backend-microservicios/AuthService/.vs/
+Backend-microservicios/AuthService/*.user
+
+# ==========================
+# DOCKER (Opcional)
+# ==========================
+# Si tuvieras volumenes locales mapeados aquí
+docker-data/
