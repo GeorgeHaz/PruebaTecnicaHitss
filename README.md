@@ -29,7 +29,7 @@ Para el front Angular:
 
 Todo el entorno se levanta con Docker Compose.
 
-1. **Para la b
+1. **Para la ejecucion.**
 2. **Clonar el repositorio.**
 3. **Navegar a la carpeta del backend:**
    Debes entrar a la carpeta donde está el archivo `docker-compose.yml`:
