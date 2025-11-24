@@ -8,6 +8,7 @@ import { DashboardStats } from '../../interfaces/models';
 import { NgChartsModule } from 'ng2-charts';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dashboard',
@@ -51,6 +52,8 @@ export class DashboardComponent implements OnInit {
       this.stats = misDatos;
       this.setupCharts(this.stats!);
     });
+
+    this.checkWelcomeMessage();
   }
 
   setupCharts(data: DashboardStats) {
@@ -59,6 +62,30 @@ export class DashboardComponent implements OnInit {
         labels: Object.keys(data.charts.orders_by_status),
         datasets: [{ data: Object.values(data.charts.orders_by_status) }]
       };
+    }
+  }
+
+  checkWelcomeMessage() {
+    const navigationState = history.state;
+
+    if (navigationState?.showWelcome) {
+      
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+
+      Toast.fire({ 
+        icon: 'success', 
+        title: '¡Bienvenido al sistema!' 
+      });
     }
   }
 

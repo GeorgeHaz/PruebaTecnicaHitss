@@ -1,8 +1,9 @@
+/* Contenedor Principal */
 .page-container {
   padding: 20px;
   background-color: #f5f5f5;
   min-height: 100vh;
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
 
 h1 {
@@ -10,38 +11,39 @@ h1 {
   color: #333;
 }
 
+/* Grid Layout */
 .content-grid {
   display: flex;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   gap: 20px;
   align-items: flex-start;
-  width: 100%; 
+  width: 100%;
 }
 
+/* === IZQUIERDA: FORMULARIO === */
 .form-card {
   flex: 1; 
   min-width: 300px;
   max-width: 400px;
   width: 100%;
-  
   overflow: hidden; 
 }
 
 .form-card mat-card-content {
-  padding-right: 16px !important; 
-  padding-left: 16px !important;
-  padding-bottom: 16px !important;
+  padding: 16px !important;
 }
 
 .form-row {
   display: flex;
+  flex-direction: row;
   gap: 15px;
   width: 100%;
-  min-width: 0;    
+  margin-bottom: 5px;
 }
 
 .half-width {
   flex: 1;
+  width: auto;
   min-width: 0; 
 }
 
@@ -54,9 +56,29 @@ mat-form-field {
   width: 100%;
 }
 
-.table-container {
+/* === DERECHA: PANEL DE LISTA === */
+.right-panel {
   flex: 2;
-  min-width: 0;
+  min-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Espacio entre Filtros y Tabla */
+}
+
+/* Barra de Filtros / Buscador */
+.search-bar-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Tabla */
+.table-container {
+  width: 100%;
   background: white;
   border-radius: 8px;
   overflow: hidden;
@@ -65,15 +87,11 @@ mat-form-field {
   max-width: 100%;
 }
 
-.table-scroll {
-  overflow-x: auto;
-  width: 100%;
-}
-
 table {
   width: 100%;
 }
 
+/* Overlay Carga */
 .loading-shade {
   position: absolute;
   top: 0;
@@ -88,22 +106,8 @@ table {
   justify-content: center;
 }
 
+/* Móvil */
 @media (max-width: 800px) {
-  .content-grid {
-    flex-direction: column;
-  }
-  
-  .form-card, .table-container {
-    max-width: 100%;
-  }
-}
-
-mat-form-field {
-  width: 100% !important;
-  min-width: 0;
-  box-sizing: border-box;
-}
-
-mat-card {
-  box-sizing: border-box;
+  .content-grid { flex-direction: column; }
+  .form-card, .right-panel { max-width: 100%; min-width: 100%; }
 }

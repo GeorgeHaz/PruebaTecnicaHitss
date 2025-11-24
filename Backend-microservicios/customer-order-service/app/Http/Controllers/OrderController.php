@@ -24,21 +24,18 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Order::with('client');
-
-        if ($request->has('status')) {
-            $query->where('status', $request->status);
-        }
-
-        if ($request->has('date')) {
-            $query->whereDate('order_date', $request->date);
-        }
-
-        if ($request->has('client_id')) {
-            $query->where('client_id', $request->client_id);
-        }
-
-        return $query->latest()->paginate(10);
+        return Order::with('client')
+        ->when($request->status, function ($q, $value) {
+            $q->where('status', $value);
+        })
+        ->when($request->date, function ($q, $value) {
+            $q->whereDate('order_date', $value);
+        })
+        ->when($request->client_id, function ($q, $value) {
+            $q->where('client_id', $value);
+        })
+        ->latest()
+        ->paginate(10);
     }
 
     /**

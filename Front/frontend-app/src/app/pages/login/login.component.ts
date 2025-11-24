@@ -5,12 +5,13 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTabsModule } from '@angular/material/tabs'; // <--- IMPORTANTE
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 
 import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -35,37 +36,37 @@ export class LoginComponent {
 
   selectedTabIndex = signal(0);
 
-  // --- FORMULARIO LOGIN ---
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]]
   });
 
-  // --- FORMULARIO REGISTRO ---
   registerForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
   isLoading = false;
+
   onLogin() {
     if (this.loginForm.valid) {
       this.isLoading = true;
-
       this.api.login(this.loginForm.value).subscribe({
         next: (res) => {
-          this.isLoading = false;
-
           if (res.isSuccess && res.data) {
             localStorage.setItem('token', res.data);
-            this.router.navigate(['/dashboard']);
+
+            this.router.navigate(['/dashboard'], {
+              state: { showWelcome: true}
+            });
           } else {
-            alert('Error: ' + res.message);
+            this.isLoading = false;
+            Swal.fire('Error de acceso', res.message || 'Credenciales incorrectas', 'error');
           }
         },
         error: (err) =>{
           this.isLoading = false;
-          alert('Error de conexión: ' + err.message);
+          Swal.fire('Error de acceso', err.message || 'Credenciales incorrectas', 'error');
         } 
       });
     }
@@ -74,12 +75,16 @@ export class LoginComponent {
   onRegister() {
     if (this.registerForm.valid) {
       this.isLoading = true;
-
       this.api.register(this.registerForm.value).subscribe({
         next: () => {
           this.isLoading = false;
 
-          alert('Cuenta creada con éxito. Por favor, inicia sesión.');
+          Swal.fire({
+            title: '¡Cuenta Creada!',
+            text: 'Tu usuario ha sido registrado. Por favor inicia sesión.',
+            icon: 'success',
+            confirmButtonText: 'Entendido'
+          });
           
           this.loginForm.patchValue({
              email: this.registerForm.value.email,
@@ -89,10 +94,10 @@ export class LoginComponent {
           this.registerForm.reset();
           this.selectedTabIndex.set(0); 
         },
-        error: (err) =>{
+        error: (err) => {
           this.isLoading = false;
-          alert('Error al registrar: ' + (err.error?.message || 'Intente nuevamente'));
-        } 
+          Swal.fire('Error al registrar', err.error?.message || 'Intente nuevamente', 'error');
+        }
       });
     }
   }

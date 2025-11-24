@@ -4,6 +4,7 @@ import { Client, DashboardStats, LoginResponse, Order } from '../interfaces/mode
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../../enviroment/enviroment';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -24,16 +25,25 @@ export class ApiService {
     return this.http.get<DashboardStats>(`${environment.businessApi}/dashboard/stats`);
   }
 
-  getClients(): Observable<any> {
-    return this.http.get<any>(`${environment.businessApi}/clients`);
+  getClients(search: string = ''): Observable<any> {
+    let params = new HttpParams();
+    if (search) params = params.set('search', search);
+
+    return this.http.get<any>(`${environment.businessApi}/clients`, { params });
   }
 
   createClient(client: Client): Observable<Client> {
     return this.http.post<Client>(`${environment.businessApi}/clients`, client);
   }
 
-  getOrders(): Observable<any> {
-    return this.http.get<any>(`${environment.businessApi}/orders`);
+  getOrders(filters: any = {}): Observable<any> {
+    let params = new HttpParams();
+    
+    if (filters.status) params = params.set('status', filters.status);
+    if (filters.date) params = params.set('date', filters.date);
+    if (filters.client_id) params = params.set('client_id', filters.client_id);
+
+    return this.http.get<any>(`${environment.businessApi}/orders`, { params });
   }
 
   createOrder(order: Order): Observable<Order> {

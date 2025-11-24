@@ -11,6 +11,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { ApiService } from '../../services/api.service';
 import { Client } from '../../interfaces/models';
+import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-clients',
@@ -19,6 +21,7 @@ import { Client } from '../../interfaces/models';
     CommonModule,
     ReactiveFormsModule,
     MatCardModule,
+    FormsModule,
     MatButtonModule,
     MatInputModule,
     MatTableModule,
@@ -35,6 +38,7 @@ export class ClientsComponent implements OnInit {
   isLoading = false;
   isSaving = false;
   clientIdToEdit: number | null = null;
+  searchTerm: string = '';
 
   clients: Client[] = [];
   displayedColumns: string[] = ['id', 'name', 'email', 'phone', 'actions'];
@@ -54,7 +58,7 @@ export class ClientsComponent implements OnInit {
   loadClients() {
     this.isLoading = true;
 
-    this.api.getClients().subscribe({
+    this.api.getClients(this.searchTerm).subscribe({
       next: (res: any) => {
         this.clients = res.data || res;
         this.isLoading = false;
@@ -79,14 +83,19 @@ export class ClientsComponent implements OnInit {
 
         request$.subscribe({
           next: () => {
-            alert(this.isEditing ? 'Cliente actualizado' : 'Cliente creado');
+            Swal.fire({
+              icon: 'success',
+              title: this.isEditing ? 'Cliente Actualizado' : 'Cliente Creado',
+              showConfirmButton: false, // Se cierra solo
+              timer: 1500
+            });
             this.resetForm();
             this.loadClients();
             this.isSaving = false;
             this.clientForm.enable();
           },
           error: (err) =>{
-            alert('Error: ' + err.message);
+            Swal.fire('Error', 'No se pudo guardar el cliente', 'error');
             this.isSaving = false;
             this.clientForm.enable();
           } 
@@ -107,18 +116,31 @@ export class ClientsComponent implements OnInit {
   }
 
   onDelete(id: number) {
-    if (confirm('¿Estás seguro de eliminar este cliente?')) {
-      this.isLoading = true;
-      this.api.deleteClient(id).subscribe({
-        next: () => {
-          this.loadClients();
-        },
-        error: (err) => {
-          alert('Error al eliminar');
-          this.isLoading = false;
-        }
-      });
-    }
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "No podrás revertir esta acción",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+        this.isLoading = true;
+        this.api.deleteClient(id).subscribe({
+          next: () => {
+            this.loadClients();
+            Swal.fire('Eliminado', 'El cliente ha sido eliminado.', 'success');
+          },
+          error: () => {
+            this.isLoading = false;
+            Swal.fire('Error', 'No se pudo eliminar el cliente', 'error');
+          }
+        });
+      }
+    });
   }
 
   resetForm() {
@@ -126,5 +148,14 @@ export class ClientsComponent implements OnInit {
     this.clientIdToEdit = null;
     this.clientForm.reset();
     this.clientForm.enable();
+  }
+
+  onSearch() {
+    this.loadClients();
+  }
+
+  clearSearch() {
+    this.searchTerm = '';
+    this.loadClients();
   }
 }

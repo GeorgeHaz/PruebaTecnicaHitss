@@ -1,8 +1,5 @@
 <div class="login-container">
   <mat-card>
-    <div *ngIf="isLoading" class="overlay">
-      <mat-spinner diameter="60"></mat-spinner>
-    </div>
     <mat-card-header class="center-header">
       <mat-card-title>Sistema POS</mat-card-title>
       <mat-card-subtitle>Bienvenido</mat-card-subtitle>
@@ -13,51 +10,65 @@
         
         <mat-tab label="Ingresar">
           <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="tab-form">
-            <mat-form-field class="full-width">
-              <mat-label>Correo Electrónico</mat-label>
-              <mat-icon matPrefix>email</mat-icon>
-              <input matInput formControlName="email">
-            </mat-form-field>
+            
+            <fieldset [disabled]="isLoading" style="border: none; padding: 0; margin: 0;">
+              
+              <mat-form-field class="full-width">
+                <mat-label>Correo Electrónico</mat-label>
+                <mat-icon matPrefix>email</mat-icon>
+                <input matInput formControlName="email">
+              </mat-form-field>
 
-            <mat-form-field class="full-width">
-              <mat-label>Contraseña</mat-label>
-              <mat-icon matPrefix>lock</mat-icon>
-              <input matInput type="password" formControlName="password">
-            </mat-form-field>
+              <mat-form-field class="full-width">
+                <mat-label>Contraseña</mat-label>
+                <mat-icon matPrefix>lock</mat-icon>
+                <input matInput type="password" formControlName="password">
+              </mat-form-field>
 
-            <div class="actions">
-              <button mat-flat-button color="primary" type="submit" [disabled]="loginForm.invalid || isLoading" class="full-width-btn">
-                @if(isLoading) 
-                { <mat-spinner diameter="24" color="accent" mode="indeterminate"></mat-spinner> } 
-                @else 
-                {Iniciar Sesión}
-              </button>
-            </div>
+              <div class="actions">
+                <button mat-flat-button color="primary" type="submit" [disabled]="loginForm.invalid || isLoading" class="full-width-btn loading-btn">
+                  @if(isLoading) { 
+                    <mat-spinner diameter="24" color="accent" mode="indeterminate"></mat-spinner> 
+                  } @else {
+                    Iniciar Sesión
+                  }
+                </button>
+              </div>
+
+            </fieldset>
           </form>
         </mat-tab>
 
         <mat-tab label="Crear Cuenta">
           <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="tab-form">
-            <p class="hint-text">Ingresa tus datos para obtener una cuenta nueva.</p>
             
-            <mat-form-field class="full-width">
-              <mat-label>Correo Electrónico</mat-label>
-              <mat-icon matPrefix>person_add</mat-icon>
-              <input matInput formControlName="email">
-            </mat-form-field>
+            <fieldset [disabled]="isLoading" style="border: none; padding: 0; margin: 0;">
+                <p class="hint-text">Ingresa tus datos para obtener una cuenta nueva.</p>
+                
+                <mat-form-field class="full-width">
+                  <mat-label>Correo Electrónico</mat-label>
+                  <mat-icon matPrefix>person_add</mat-icon>
+                  <input matInput formControlName="email">
+                </mat-form-field>
 
-            <mat-form-field class="full-width">
-              <mat-label>Contraseña Nueva</mat-label>
-              <mat-icon matPrefix>vpn_key</mat-icon>
-              <input matInput type="password" formControlName="password">
-              <mat-hint>Mínimo 6 caracteres</mat-hint>
-            </mat-form-field>
+                <mat-form-field class="full-width">
+                  <mat-label>Contraseña Nueva</mat-label>
+                  <mat-icon matPrefix>vpn_key</mat-icon>
+                  <input matInput type="password" formControlName="password">
+                  <mat-hint>Mínimo 6 caracteres</mat-hint>
+                </mat-form-field>
 
-            <div class="actions">
-              <button mat-stroked-button color="accent" type="submit" [disabled]="registerForm.invalid || isLoading" class="full-width-btn">
-                Registrarse
-              </button>
-            </div>
+                <div class="actions">
+                  <button mat-stroked-button color="accent" type="submit" [disabled]="registerForm.invalid || isLoading" class="full-width-btn loading-btn">
+                    @if(isLoading) {
+                      <mat-spinner diameter="24" color="accent" mode="indeterminate"></mat-spinner>
+                    } @else {
+                      Registrarse
+                    }
+                  </button>
+                </div>
+            </fieldset>
+            
           </form>
         </mat-tab>
 

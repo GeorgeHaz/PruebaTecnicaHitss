@@ -7,11 +7,12 @@ Solución implementada con arquitectura de Microservicios, Dockerizada y separad
 * **Front/**: Contiene el código fuente de la aplicación Angular 17.
 
 ## 🚀 Tecnologías
-* **Frontend:** Angular 17 (Standalone Components, Material UI).
-* **Backend Auth:** .NET 8 (Identity, JWT).
-* **Backend Core:** PHP 8.2 (Laravel).
+* **Frontend:** Angular 17 (Standalone Components, Material UI, SWEET ALERT).
+* **Backend Auth:** .NET 8 (Identity, JWT, SWAGGER).
+* **Backend Core:** PHP 8.2 (Laravel, SWAGGER).
 * **Base de Datos:** SQL Server 2022 (Dockerizado).
 * **Infraestructura:** Docker & Docker Compose.
+* **Control de versiones:** Git, GitHub.
 
 ## 🛠️ Instrucciones de Ejecución
 
