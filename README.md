@@ -47,4 +47,6 @@ Todo el entorno se levanta con Docker Compose.
 10. **Tener en consideracion las versiones del pdf entregado a mi, ya que se usan exactamente lo mismo.**
 
 pruebas de versionamiento
+
+Error
    
