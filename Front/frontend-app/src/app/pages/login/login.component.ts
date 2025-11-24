@@ -48,12 +48,14 @@ export class LoginComponent {
   });
 
   isLoading = false;
-  // Lógica de Iniciar Sesión
   onLogin() {
     if (this.loginForm.valid) {
       this.isLoading = true;
+
       this.api.login(this.loginForm.value).subscribe({
         next: (res) => {
+          this.isLoading = false;
+
           if (res.isSuccess && res.data) {
             localStorage.setItem('token', res.data);
             this.router.navigate(['/dashboard']);
@@ -63,30 +65,34 @@ export class LoginComponent {
         },
         error: (err) =>{
           this.isLoading = false;
-          alert('Error de conexión')
+          alert('Error de conexión: ' + err.message);
         } 
       });
     }
   }
 
-  // Lógica de Registrarse
   onRegister() {
     if (this.registerForm.valid) {
+      this.isLoading = true;
+
       this.api.register(this.registerForm.value).subscribe({
         next: () => {
+          this.isLoading = false;
+
           alert('Cuenta creada con éxito. Por favor, inicia sesión.');
           
-          // Truco de UX: Mover los datos al form de login y cambiar de pestaña
           this.loginForm.patchValue({
              email: this.registerForm.value.email,
              password: '' 
           });
           
-          // Limpiar registro y volver a la pestaña 0 (Login)
           this.registerForm.reset();
           this.selectedTabIndex.set(0); 
         },
-        error: (err) => alert('Error al registrar: ' + (err.error?.message || 'Intente nuevamente'))
+        error: (err) =>{
+          this.isLoading = false;
+          alert('Error al registrar: ' + (err.error?.message || 'Intente nuevamente'));
+        } 
       });
     }
   }

@@ -9,6 +9,7 @@ import { MatTableModule } from '@angular/material/table';
 import { ApiService } from '../../services/api.service';
 import { Client, Order } from '../../interfaces/models';
 import { MatIcon } from "@angular/material/icon";
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-orders',
@@ -21,14 +22,18 @@ import { MatIcon } from "@angular/material/icon";
     MatInputModule,
     MatSelectModule,
     MatTableModule,
-    MatIcon
-],
+    MatIcon,
+    MatProgressSpinnerModule
+  ],
   templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.css'] 
+  styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent implements OnInit {
   private api = inject(ApiService);
   private fb = inject(FormBuilder);
+
+  isLoading = false;
+  isSaving = false;
   isEditing = false;
   orderIdToEdit: number | null = null;
 
@@ -44,25 +49,29 @@ export class OrdersComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.loadOrders();
-    this.loadClients();
+    this.loadData();
   }
 
-  loadOrders() {
-    this.api.getOrders().subscribe((res: any) => {
-      this.orders = res.data || res;
-    });
-  }
+  loadData() {
+    this.isLoading = true;
 
-  loadClients() {
     this.api.getClients().subscribe((res: any) => {
       this.clientsList = res.data || res;
+    });
+
+    this.api.getOrders().subscribe({
+      next: (res: any) => {
+        this.orders = res.data || res;
+        this.isLoading = false;
+      },
+      error: () => this.isLoading = false
     });
   }
 
   saveOrder() {
     if (this.orderForm.valid) {
-      // Convertir valores
+      this.isSaving = true;
+
       const formVal = this.orderForm.value;
       const orderData: Order = {
         client_id: Number(formVal.client_id),
@@ -71,29 +80,30 @@ export class OrdersComponent implements OnInit {
         status: formVal.status as any
       };
 
-      if (this.isEditing && this.orderIdToEdit) {
-        // ACTUALIZAR
-        this.api.updateOrder(this.orderIdToEdit, orderData).subscribe(() => {
-           alert('Pedido actualizado');
-           this.resetForm();
-           this.loadOrders(); // Refrescar lista
-        });
-      } else {
-        // CREAR
-        this.api.createOrder(orderData).subscribe(() => {
-           alert('Pedido creado');
-           this.resetForm();
-           this.loadOrders();
-        });
-      }
+      const request$ = (this.isEditing && this.orderIdToEdit)
+        ? this.api.updateOrder(this.orderIdToEdit, orderData)
+        : this.api.createOrder(orderData);
+      request$.subscribe({
+        next: () => {
+          alert(this.isEditing ? 'Pedido actualizado' : 'Pedido registrado');
+          this.resetForm();
+          this.loadData();
+          this.isSaving = false;
+        },
+        error: (err) => {
+          alert('Error: ' + err.message);
+          this.isSaving = false
+        }
+      });
     }
   }
+
 
   onEdit(order: Order) {
     this.isEditing = true;
     this.orderIdToEdit = order.id!;
     this.orderForm.patchValue({
-      client_id: String(order.client_id), // Select necesita string a veces si el value es string
+      client_id: String(order.client_id),
       total: String(order.total),
       order_date: order.order_date,
       status: order.status
@@ -101,17 +111,24 @@ export class OrdersComponent implements OnInit {
   }
 
   onDelete(id: number) {
-    if(confirm('¿Eliminar pedido?')) {
-      this.api.deleteOrder(id).subscribe(() => this.loadOrders());
+    if (confirm('¿Eliminar pedido?')) {
+      this.isLoading = true;
+      this.api.deleteOrder(id).subscribe({
+        next: () => this.loadData(),
+        error: () => {
+          alert('Error al eliminar');
+          this.isLoading = false;
+        }
+      });
     }
   }
 
   resetForm() {
     this.isEditing = false;
     this.orderIdToEdit = null;
-    this.orderForm.reset({ 
-      status: 'pending', 
-      order_date: new Date().toISOString().split('T')[0] 
+    this.orderForm.reset({
+      status: 'pending',
+      order_date: new Date().toISOString().split('T')[0]
     });
   }
 }

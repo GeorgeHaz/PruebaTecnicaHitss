@@ -5,11 +5,6 @@
       <mat-icon>logout</mat-icon> Salir
     </button>
   </header>
-  <nav style="margin-bottom: 20px; display: flex; gap: 10px;">
-    <a mat-raised-button color="primary" routerLink="/dashboard">Inicio</a>
-    <a mat-raised-button routerLink="/clients">Clientes</a>
-    <a mat-raised-button routerLink="/orders">Pedidos</a>
-  </nav>
   <div class="kpi-grid">
     @for (item of kpiList; track item.label) {
       <mat-card class="kpi-card" [style.borderLeftColor]="item.color">

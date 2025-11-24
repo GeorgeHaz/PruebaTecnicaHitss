@@ -1,5 +1,8 @@
 <div class="login-container">
   <mat-card>
+    <div *ngIf="isLoading" class="overlay">
+      <mat-spinner diameter="60"></mat-spinner>
+    </div>
     <mat-card-header class="center-header">
       <mat-card-title>Sistema POS</mat-card-title>
       <mat-card-subtitle>Bienvenido</mat-card-subtitle>
@@ -51,7 +54,7 @@
             </mat-form-field>
 
             <div class="actions">
-              <button mat-stroked-button color="accent" type="submit" [disabled]="registerForm.invalid" class="full-width-btn">
+              <button mat-stroked-button color="accent" type="submit" [disabled]="registerForm.invalid || isLoading" class="full-width-btn">
                 Registrarse
               </button>
             </div>

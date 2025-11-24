@@ -12,9 +12,31 @@ class ClientController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     /**
+     * @OA\Get(
+     * path="/api/clients",
+     * summary="Listar clientes",
+     * tags={"Clientes"},
+     * security={{"bearerAuth":{}}},
+     * @OA\Response(
+     * response=200,
+     * description="Lista de clientes recuperada",
+     * @OA\JsonContent(
+     * type="array",
+     * @OA\Items(
+     * @OA\Property(property="id", type="integer", example=1),
+     * @OA\Property(property="first_name", type="string", example="Juan"),
+     * @OA\Property(property="last_name", type="string", example="Pérez"),
+     * @OA\Property(property="email", type="string", example="juan@test.com")
+     * )
+     * )
+     * )
+     * )
+     */
     public function index()
     {
-        $clients = Client::latest()->paginate(10); // Paginación para eficiencia
+        $clients = Client::latest()->paginate(10);
         return ClientResource::collection($clients);
     }
 
@@ -28,6 +50,28 @@ class ClientController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     */
+
+     /**
+     * @OA\Post(
+     * path="/api/clients",
+     * summary="Crear un nuevo cliente",
+     * tags={"Clientes"},
+     * security={{"bearerAuth":{}}},
+     * @OA\RequestBody(
+     * required=true,
+     * @OA\JsonContent(
+     * required={"first_name","last_name","email"},
+     * @OA\Property(property="first_name", type="string", example="Juan"),
+     * @OA\Property(property="last_name", type="string", example="Pérez"),
+     * @OA\Property(property="email", type="string", format="email", example="juan@test.com"),
+     * @OA\Property(property="phone", type="string", example="0991234567"),
+     * @OA\Property(property="address", type="string", example="Av. Amazonas")
+     * )
+     * ),
+     * @OA\Response(response=201, description="Cliente creado exitosamente"),
+     * @OA\Response(response=422, description="Error de validación (Email duplicado)")
+     * )
      */
     public function store(ClientRequest $request)
     {
@@ -54,6 +98,31 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      */
+
+     /**
+     * @OA\Put(
+     * path="/api/clients/{id}",
+     * summary="Actualizar información del cliente",
+     * tags={"Clientes"},
+     * security={{"bearerAuth":{}}},
+     * @OA\Parameter(
+     * name="id",
+     * in="path",
+     * description="ID del cliente",
+     * required=true,
+     * @OA\Schema(type="integer")
+     * ),
+     * @OA\RequestBody(
+     * required=true,
+     * @OA\JsonContent(
+     * @OA\Property(property="first_name", type="string", example="Juan Editado"),
+     * @OA\Property(property="last_name", type="string", example="Pérez"),
+     * @OA\Property(property="phone", type="string", example="0990000000")
+     * )
+     * ),
+     * @OA\Response(response=200, description="Cliente actualizado")
+     * )
+     */
     public function update(ClientRequest $request, Client $client)
     {
         $client->update($request->validated());
@@ -62,6 +131,22 @@ class ClientController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     */
+
+     /**
+     * @OA\Delete(
+     * path="/api/clients/{id}",
+     * summary="Eliminar un cliente",
+     * tags={"Clientes"},
+     * security={{"bearerAuth":{}}},
+     * @OA\Parameter(
+     * name="id",
+     * in="path",
+     * required=true,
+     * @OA\Schema(type="integer")
+     * ),
+     * @OA\Response(response=204, description="Cliente eliminado")
+     * )
      */
     public function destroy(Client $client)
     {

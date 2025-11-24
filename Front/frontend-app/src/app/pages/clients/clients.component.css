@@ -1,29 +1,109 @@
 .page-container {
-    padding: 20px;
-    background-color: #f5f5f5;
-    min-height: 100vh;
-  }
+  padding: 20px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  box-sizing: border-box; 
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.content-grid {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 20px;
+  align-items: flex-start;
+  width: 100%; 
+}
+
+.form-card {
+  flex: 1; 
+  min-width: 300px;
+  max-width: 400px;
+  width: 100%;
   
+  overflow: hidden; 
+}
+
+.form-card mat-card-content {
+  padding-right: 16px !important; 
+  padding-left: 16px !important;
+  padding-bottom: 16px !important;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  min-width: 0;    
+}
+
+.half-width {
+  flex: 1;
+  min-width: 0; 
+}
+
+.full-width {
+  width: 100%;
+  display: block;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.table-container {
+  flex: 2;
+  min-width: 0;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  min-height: 200px; 
+  max-width: 100%;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  width: 100%;
+}
+
+table {
+  width: 100%;
+}
+
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.85);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 800px) {
   .content-grid {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    align-items: flex-start;
+    flex-direction: column;
   }
   
-  .form-card {
-    flex: 1;
-    min-width: 300px;
-    max-width: 400px;
+  .form-card, .table-container {
+    max-width: 100%;
   }
-  
-  .table-container {
-    flex: 2;
-    min-width: 400px;
-    background: white;
-    overflow: auto;
-  }
-  
-  .full-width { width: 100%; }
-  .half-width { width: 48%; margin-right: 2%; }
-  .form-row { display: flex; }
+}
+
+mat-form-field {
+  width: 100% !important;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+mat-card {
+  box-sizing: border-box;
+}

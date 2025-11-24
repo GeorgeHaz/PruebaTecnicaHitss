@@ -45,9 +45,9 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    // EN LUGAR DE LLAMAR A LA API, LEEMOS DEL RESOLVER
+
     this.route.data.subscribe(({ misDatos }) => {
-      // 'misDatos' es el nombre que le pusimos en app.routes.ts
+
       this.stats = misDatos;
       this.setupCharts(this.stats!);
     });

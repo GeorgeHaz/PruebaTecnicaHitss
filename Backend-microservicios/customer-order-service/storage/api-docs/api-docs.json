@@ -1,0 +1,468 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Clientes y Pedidos",
+        "description": "Documentación técnica del microservicio PHP",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/clients": {
+            "get": {
+                "tags": [
+                    "Clientes"
+                ],
+                "summary": "Listar clientes",
+                "operationId": "d00d20521584ab5da83e088abb7aded2",
+                "responses": {
+                    "200": {
+                        "description": "Lista de clientes recuperada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "first_name": {
+                                                "type": "string",
+                                                "example": "Juan"
+                                            },
+                                            "last_name": {
+                                                "type": "string",
+                                                "example": "Pérez"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "example": "juan@test.com"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Clientes"
+                ],
+                "summary": "Crear un nuevo cliente",
+                "operationId": "f1e86e5b79fedfa6593067977292b13b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "first_name",
+                                    "last_name",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "Juan"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "Pérez"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "juan@test.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "0991234567"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Av. Amazonas"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Cliente creado exitosamente"
+                    },
+                    "422": {
+                        "description": "Error de validación (Email duplicado)"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/clients/{id}": {
+            "put": {
+                "tags": [
+                    "Clientes"
+                ],
+                "summary": "Actualizar información del cliente",
+                "operationId": "7d0a5ae9e306858d30e04fc50265d80c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del cliente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "Juan Editado"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "Pérez"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "0990000000"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cliente actualizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Clientes"
+                ],
+                "summary": "Eliminar un cliente",
+                "operationId": "c929f14f421a80a896c6fe116ffdc317",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Cliente eliminado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/dashboard/stats": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Obtener estadísticas generales y gráficas",
+                "operationId": "2d1bd6c9f8fe1cf3f8cafed219f661e0",
+                "responses": {
+                    "200": {
+                        "description": "Datos del dashboard recuperados exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "kpis": {
+                                            "description": "Indicadores clave de rendimiento",
+                                            "properties": {
+                                                "total_orders": {
+                                                    "type": "integer",
+                                                    "example": 150
+                                                },
+                                                "active_clients": {
+                                                    "type": "integer",
+                                                    "example": 45
+                                                },
+                                                "pending_orders": {
+                                                    "type": "integer",
+                                                    "example": 12
+                                                },
+                                                "completed_orders": {
+                                                    "type": "integer",
+                                                    "example": 130
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "charts": {
+                                            "description": "Datos para las gráficas",
+                                            "properties": {
+                                                "orders_by_status": {
+                                                    "description": "Conteo agrupado por estado",
+                                                    "type": "object",
+                                                    "example": {
+                                                        "pending": 12,
+                                                        "completed": 130,
+                                                        "canceled": 8
+                                                    }
+                                                },
+                                                "activity_last_30_days": {
+                                                    "description": "Ventas por día",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "date": {
+                                                                "type": "string",
+                                                                "format": "date",
+                                                                "example": "2023-11-20"
+                                                            },
+                                                            "count": {
+                                                                "type": "integer",
+                                                                "example": 5
+                                                            },
+                                                            "income": {
+                                                                "type": "number",
+                                                                "format": "float",
+                                                                "example": 540.5
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado (Token inválido o ausente)"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/orders": {
+            "get": {
+                "tags": [
+                    "Ordenes"
+                ],
+                "summary": "Listar ordenes",
+                "operationId": "2cd7e03021e72d9d799c12dfe179c865",
+                "responses": {
+                    "200": {
+                        "description": "Lista de ordenes"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Ordenes"
+                ],
+                "summary": "Crear un nueva orden",
+                "operationId": "d690d6834318e9b064df441e854de8b9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "client_id",
+                                    "order_date",
+                                    "total",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "client_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "order_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-11-19"
+                                    },
+                                    "total": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 100.5
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "pending"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Orden creada exitosamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/orders/{id}": {
+            "put": {
+                "tags": [
+                    "Ordenes"
+                ],
+                "summary": "Actualizar información de la orden",
+                "operationId": "6a7029f5510ca08e28a2d58a5fe19439",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la orden.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "order_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-11-19"
+                                    },
+                                    "total": {
+                                        "type": "numeric",
+                                        "example": "100.00"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "pending"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cliente actualizado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Ordenes"
+                ],
+                "summary": "Eliminar un cliente",
+                "operationId": "303a7b797887b66c7790c4c187b54790",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Orden eliminada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Ingrese su token JWT aquí",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Clientes",
+            "description": "Clientes"
+        },
+        {
+            "name": "Dashboard",
+            "description": "Dashboard"
+        },
+        {
+            "name": "Ordenes",
+            "description": "Ordenes"
+        }
+    ]
+}

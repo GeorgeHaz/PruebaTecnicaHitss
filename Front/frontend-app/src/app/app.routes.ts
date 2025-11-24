@@ -1,8 +1,8 @@
 import { Routes, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { LoginComponent } from './pages/login/login.component';
+import { MainLayoutComponent } from './components/main-layout/main-layout.component'; // <--- El nuevo layout
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { RegisterComponent } from './pages/register/register.component';
 import { ClientsComponent } from './pages/clients/clients.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { dashboardResolver } from './core/dashboard.resolver';
@@ -15,13 +15,23 @@ const authGuard = () => {
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { 
-    path: 'dashboard', 
-    component: DashboardComponent, 
+
+  {
+    path: '',
+    component: MainLayoutComponent,
     canActivate: [authGuard],
-    resolve: { misDatos: dashboardResolver } 
+    children: [
+      { 
+        path: 'dashboard', 
+        component: DashboardComponent,
+        resolve: { misDatos: dashboardResolver } 
+      },
+      { path: 'clients', component: ClientsComponent },
+      { path: 'orders', component: OrdersComponent },
+      
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+    ]
   },
-  { path: 'clients', component: ClientsComponent, canActivate: [authGuard] },
-  { path: 'orders', component: OrdersComponent, canActivate: [authGuard] },
-  { path: '', redirectTo: 'login', pathMatch: 'full' }
+  
+  { path: '**', redirectTo: 'login' }
 ];
