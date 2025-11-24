@@ -45,4 +45,6 @@ Todo el entorno se levanta con Docker Compose.
    `Update-Database`.
 9. **Tambien se realizaron pruebas en postman o parte de ellas, se lo puede descargar del archivo en la raiz del respositorio llamado PruebasPostman.json.**
 10. **Tener en consideracion las versiones del pdf entregado a mi, ya que se usan exactamente lo mismo.**
+
+pruebas de versionamiento
    
